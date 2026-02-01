@@ -5,7 +5,7 @@ import dbConnect from "./lib/db";
 import bcrypt from "bcryptjs";
 import User from "./app/models/user.model";
 
-export const { handler, signIn, signOut, getSession } = NextAuth({
+export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     Credentials({
       name: "Credentials",
