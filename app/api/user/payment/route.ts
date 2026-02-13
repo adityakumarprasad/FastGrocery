@@ -1,8 +1,10 @@
 import dbConnect from "@/lib/db";
-// import emitEventHandler from "@/lib/emitEventHandler";
 import Order from "@/app/models/order.model";
 import User from "@/app/models/user.model";
 import { NextRequest, NextResponse } from "next/server";
+import Stripe from "stripe";
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
 export async function POST(req: NextRequest) {
   try {
@@ -30,17 +32,33 @@ export async function POST(req: NextRequest) {
       address
     })
 
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      mode: "payment",
+      success_url: `${process.env.NEXT_BASE_URL}/user/order-success`,
+      cancel_url: `${process.env.NEXT_BASE_URL}/user/order-cancel`,
+      line_items: [
+        {
+          price_data: {
+            currency: 'inr',
+            product_data: {
+              name: 'fastGrocery Order Payment',
+            },
+            unit_amount: totalAmount * 100,
+          },
+          quantity: 1,
+        },
 
-    await emitEventHandler("new-order", newOrder)
+      ],
+      metadata: { orderId: newOrder._id.toString() }
+    })
 
-    return NextResponse.json(
-      newOrder,
-      { status: 201 }
-    )
+    return NextResponse.json({ url: session.url }, { status: 200 })
+
 
   } catch (error) {
     return NextResponse.json(
-      { message: `place order error ${error}` },
+      { message: `order payment error ${error}` },
       { status: 500 }
     )
   }
