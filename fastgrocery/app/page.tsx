@@ -27,7 +27,7 @@ const home = async () => {
   return (
     <div>
       <Nav user={plainUser} />
-      <GeoUpdater />
+      <GeoUpdater userId={plainUser._id} />
       {user.role == 'user' && <UserDashboard />}
       {user.role == 'admin' && <AdminDashboard />}
       {user.role == 'deliveryBoy' && <DeliveryBoy />}
