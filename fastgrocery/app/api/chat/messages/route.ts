@@ -1,12 +1,12 @@
-import connectDb from "@/lib/db";
+import dbConnect from "@/lib/db"
 
-import Message from "@/models/message.model";
+import Message from "@/app/models/message.model";
 import Order from "@/app/models/order.model";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
-    await connectDb()
+    await dbConnect()
     const { roomId } = await req.json()
     let room = await Order.findById(roomId)
     if (!room) {

@@ -9,8 +9,9 @@ import { useParams, useRouter } from 'next/navigation'
 import { AnimatePresence, motion } from "motion/react"
 import React, { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { IMessage } from '@/app/models/message.model'
+
 import { IUser } from '@/app/models/user.model'
+import { IMessage } from '@/app/models/message.model'
 interface IOrder {
   _id?: string
   user: string

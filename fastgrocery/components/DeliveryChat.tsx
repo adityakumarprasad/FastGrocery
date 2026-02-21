@@ -1,11 +1,12 @@
 import { getSocket } from '@/lib/socket'
-import { IMessage } from '@/models/message.model'
+
 import axios from 'axios'
 import { Loader, Loader2, Send, Sparkle } from 'lucide-react'
 
 import { AnimatePresence } from 'motion/react'
 import React, { useEffect, useRef, useState } from 'react'
 import { motion } from "motion/react"
+import { IMessage } from '@/app/models/message.model'
 type props = {
   orderId: string,
   deliveryBoyId: string
