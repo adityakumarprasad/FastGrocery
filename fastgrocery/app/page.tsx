@@ -1,38 +1,74 @@
 import { auth } from '@/auth'
-import EditRoleMobile from '@/components/EditRoleMobile'
-import dbConnect from '@/lib/db'
-import { redirect } from 'next/navigation'
-import React from 'react'
-import User from './models/user.model'
-import Nav from '@/components/Nav'
-import DeliveryBoyDashboard from '@/components/DeliveryBoy'
 import AdminDashboard from '@/components/AdminDashboard'
-import UserDashboard from '@/components/UserDashboard'
 import DeliveryBoy from '@/components/DeliveryBoy'
+import EditRoleMobile from '@/components/EditRoleMobile'
+import Footer from '@/components/Footer'
 import GeoUpdater from '@/components/GeoUpdater'
 
-const home = async () => {
+import Nav from '@/components/Nav'
+import UserDashboard from '@/components/UserDashboard'
+import dbConnect from '@/lib/db'
+import Grocery, { IGrocery } from '@/app/models/grocery.model'
+
+import User from '@/app/models/user.model'
+
+import { redirect } from 'next/navigation'
+
+
+
+async function Home(props: {
+  searchParams: Promise<{
+    q: string
+  }>
+}) {
+
+  const searchParams = await props.searchParams
+
   await dbConnect()
   const session = await auth()
-  const user = await User.findById(session?.user.id)
-  if (!user) {
-    redirect('/login')
-  }
-  const inCompleteProfile = !user.mobile || !user.role || (!user.mobile && user.role == "user")
-  if (inCompleteProfile) {
+  if (!session) redirect("/login")
+  console.log(session?.user)
+  const user = await User.findById(session?.user?.id)
+  if (!user) redirect("/login")
+
+  const inComplete = !user.mobile || !user.role || (!user.mobile && user.role == "user")
+  if (inComplete) {
     return <EditRoleMobile />
   }
+
   const plainUser = JSON.parse(JSON.stringify(user))
 
+  let groceryList: IGrocery[] = []
+
+  if (user.role === "user") {
+    if (searchParams.q) {
+      groceryList = await Grocery.find({
+        $or: [
+          { name: { $regex: searchParams?.q || "", $options: "i" } },
+          { category: { $regex: searchParams?.q || "", $options: "i" } },
+        ]
+      })
+    } else {
+      groceryList = await Grocery.find({})
+
+
+    }
+  }
+
+
+
   return (
-    <div>
+    <>
       <Nav user={plainUser} />
       <GeoUpdater userId={plainUser._id} />
-      {user.role == 'user' && <UserDashboard />}
-      {user.role == 'admin' && <AdminDashboard />}
-      {user.role == 'deliveryBoy' && <DeliveryBoy />}
-    </div>
+      {user.role == "user" ? (
+        <UserDashboard groceryList={groceryList} />
+      ) : user.role == "admin" ? (
+        <AdminDashboard />
+      ) : <DeliveryBoy />}
+      <Footer />
+    </>
   )
 }
 
-export default home
+export default Home

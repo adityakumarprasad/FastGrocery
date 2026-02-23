@@ -22,7 +22,10 @@ function Login() {
     setLoading(true)
     try {
       await signIn("credentials", {
-        email, password
+        email,
+        password,
+        callbackUrl: "/",
+        redirect: true,
       })
 
       setLoading(false)
@@ -47,7 +50,7 @@ function Login() {
           duration: 0.6
         }}
         className='text-4xl font-extrabold text-green-700 mb-2'>Welcome Back</motion.h1>
-      <p className='text-gray-600 mb-8 flex items-center'>Login To Snapcart <Leaf className='w-5 h-5 text-green-600' /></p>
+      <p className='text-gray-600 mb-8 flex items-center'>Login To FastGrocery <Leaf className='w-5 h-5 text-green-600' /></p>
       <motion.form
         onSubmit={handleLogin}
         initial={{
@@ -83,8 +86,8 @@ function Login() {
           (() => {
             const formValidation = email !== "" && password !== ""
             return <button disabled={!formValidation || loading} className={`w-full font-semibold py-3 rounded-xl transition-all duration-200 shadow-md inline-flex items-center justify-center gap-2 ${formValidation
-                ? "bg-green-600 hover:bg-green-700 text-white"
-                : "bg-gray-300 text-gray-500 cursor-not-allowed"
+              ? "bg-green-600 hover:bg-green-700 text-white"
+              : "bg-gray-300 text-gray-500 cursor-not-allowed"
               }`}>
               {loading ? <Loader2 className='w-5 h-5 animate-spin' /> : "Login"}
 

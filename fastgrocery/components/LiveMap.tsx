@@ -26,6 +26,11 @@ function Recenter({ positions }: { positions: [number, number] }) {
 
 
 function LiveMap({ userLocation, deliveryBoyLocation }: Iprops) {
+  // #region agent log
+  useEffect(() => {
+    fetch('http://127.0.0.1:7242/ingest/cb28530e-047b-49f8-9942-5ffa21983a6b', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ location: 'LiveMap.tsx:mount', message: 'LiveMap mounted on client', data: { hasWindow: typeof window !== 'undefined' }, timestamp: Date.now(), hypothesisId: 'H2', runId: 'post-fix' }) }).catch(() => { });
+  }, []);
+  // #endregion
 
   const deliveryBoyIcon = L.icon({
     iconUrl: "https://cdn-icons-png.flaticon.com/128/9561/9561688.png",

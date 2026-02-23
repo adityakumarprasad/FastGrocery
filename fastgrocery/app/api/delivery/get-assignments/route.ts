@@ -1,11 +1,11 @@
 import { auth } from "@/auth";
-import connectDb from "@/lib/db";
+import dbConnect from "@/lib/db";
 import DeliveryAssignment from "@/app/models/deliveryAssignment.model";
 import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    await connectDb()
+    await dbConnect()
     const session = await auth()
     const assignments = await DeliveryAssignment.find({
       brodcastedTo: session?.user?.id,

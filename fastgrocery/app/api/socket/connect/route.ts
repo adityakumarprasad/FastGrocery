@@ -1,10 +1,10 @@
-import connectDb from "@/lib/db";
+import dbConnect from "@/lib/db";
 import User from "@/app/models/user.model";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
-    await connectDb()
+    await dbConnect()
     const { userId, socketId } = await req.json()
     const user = await User.findByIdAndUpdate(userId, {
       socketId,

@@ -6,7 +6,7 @@ import { ChevronDown, ChevronUp, CreditCard, MapPin, Package, Phone, Truck, User
 import Image from 'next/image'
 import axios from 'axios'
 
-import { IUser } from '@/models/user.model'
+import { IUser } from '@/app/models/user.model'
 import { getSocket } from '@/lib/socket'
 interface IOrder {
   _id?: string

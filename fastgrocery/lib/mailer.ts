@@ -10,7 +10,7 @@ const transporter = nodemailer.createTransport({
 
 export const sendMail = async (to: string, subject: string, html: string) => {
   await transporter.sendMail({
-    from: `"Snapcart" <${process.env.EMAIL}> `,
+    from: `"FastGrocery" <${process.env.EMAIL}> `,
     to,
     subject,
     html

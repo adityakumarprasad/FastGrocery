@@ -52,7 +52,7 @@ function RegisterForm({ previousStep }: propType) {
           duration: 0.6
         }}
         className='text-4xl font-extrabold text-green-700 mb-2'>Create Account</motion.h1>
-      <p className='text-gray-600 mb-8 flex items-center'>Join Snapcart today <Leaf className='w-5 h-5 text-green-600' /></p>
+      <p className='text-gray-600 mb-8 flex items-center'>Join FastGrocery today <Leaf className='w-5 h-5 text-green-600' /></p>
       <motion.form
         onSubmit={handleRegister}
         initial={{
