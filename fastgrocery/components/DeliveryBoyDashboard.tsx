@@ -47,6 +47,7 @@ function DeliveryBoyDashboard({ earning }: { earning: number }) {
   useEffect(() => {
     const socket = getSocket()
     if (!userData?._id) return
+    socket.emit("identity", userData._id)
     if (!navigator.geolocation) return
     const watcher = navigator.geolocation.watchPosition((pos) => {
       const lat = pos.coords.latitude
