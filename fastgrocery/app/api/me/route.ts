@@ -5,7 +5,7 @@ import dbConnect from "@/lib/db";
 
 export async function GET(req: NextRequest) {
   try {
-    await dbConnect
+    await dbConnect()
     const session = await auth()
     if (!session || !session.user) {
       return NextResponse.json(
